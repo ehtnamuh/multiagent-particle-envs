@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="Simple-Adversary.png" width="350" title="Simple-Adversary">
+  <img src="Simple-Adversary.PNG" width="350" title="Simple-Adversary">
 </p>
 
 # Multi-Agent Particle Environment
