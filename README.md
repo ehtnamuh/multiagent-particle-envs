@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="Simple-Adversary.PNG" width="350" title="Simple-Adversary">
+</p>
+
 # Multi-Agent Particle Environment
 
 A simple multi-agent particle world with a continuous observation and discrete action space, along with some basic simulated physics.
