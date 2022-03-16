@@ -11,6 +11,7 @@ class CriticNetwork(nn.Module):
 
         self.chkpt_file = os.path.join(chkpt_dir, name)
 
+        # TODO: Change Critic to accomodate variable action length
         self.fc1 = nn.Linear(input_dims+n_agents*n_actions, fc1_dims)
         self.fc2 = nn.Linear(fc1_dims, fc2_dims)
         self.q = nn.Linear(fc2_dims, 1)
@@ -33,7 +34,7 @@ class CriticNetwork(nn.Module):
     def load_checkpoint(self):
         self.load_state_dict(T.load(self.chkpt_file))
 
-
+# TODO: Keep in mind while calling, must
 class ActorNetwork(nn.Module):
     def __init__(self, alpha, input_dims, fc1_dims, fc2_dims, 
                  n_actions, name, chkpt_dir):
@@ -43,6 +44,7 @@ class ActorNetwork(nn.Module):
 
         self.fc1 = nn.Linear(input_dims, fc1_dims)
         self.fc2 = nn.Linear(fc1_dims, fc2_dims)
+        # TODO: This can probably stay
         self.pi = nn.Linear(fc2_dims, n_actions)
 
         self.optimizer = optim.Adam(self.parameters(), lr=alpha)
@@ -62,4 +64,3 @@ class ActorNetwork(nn.Module):
 
     def load_checkpoint(self):
         self.load_state_dict(T.load(self.chkpt_file))
-

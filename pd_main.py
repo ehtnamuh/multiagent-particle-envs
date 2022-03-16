@@ -12,7 +12,7 @@ def obs_list_to_state_vector(observation):
 
 if __name__ == '__main__':
     #scenario = 'simple'
-    scenario = 'simple_adversary'
+    scenario = 'simple_adversary_pd'
     env = make_env(scenario)
     n_agents = env.n
     actor_dims = []
@@ -20,11 +20,7 @@ if __name__ == '__main__':
         actor_dims.append(env.observation_space[i].shape[0])
     critic_dims = sum(actor_dims)
 
-    # action space is a list of arrays, assume each agent has same action space
     n_actions = env.action_space[0].n
-    # print("0:", {env.action_space[0].n})
-    # print("0:", {env.action_space[1].n})
-    # print("0:", {env.action_space[2].n})
 
     maddpg_agents = MADDPG(actor_dims, critic_dims, n_agents, n_actions, 
                            fc1=64, fc2=64,  
@@ -35,17 +31,24 @@ if __name__ == '__main__':
                         n_actions, n_agents, batch_size=1024)
 
     PRINT_INTERVAL = 500
-    SAVE_INTERVAL = 5000
-    N_GAMES = 100000
+    SAVE_INTERVAL = 1000
+    N_GAMES = 50000
     MAX_STEPS = 50
     total_steps = 0
     score_history = []
     evaluate = True
     best_score = -100
 
-    maddpg_agents.load_checkpoint()
-    if evaluate:
+    try:
         maddpg_agents.load_checkpoint()
+    except:
+        pass
+
+    if evaluate:
+        try:
+            maddpg_agents.load_checkpoint()
+        except:
+            pass
 
     for i in range(N_GAMES+1):
         obs = env.reset()
@@ -80,7 +83,7 @@ if __name__ == '__main__':
         if not evaluate:
             if avg_score > best_score:
                 best_score = avg_score
-            if i % SAVE_INTERVAL == 0 and i > 0:
+            if i % SAVE_INTERVAL == 0 and i>0:
                 maddpg_agents.save_checkpoint()
-        if i % PRINT_INTERVAL == 0 and i > 0:
+        if i % PRINT_INTERVAL == 0:
             print('episode', i, 'average score {:.1f}'.format(avg_score))

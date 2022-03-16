@@ -9,7 +9,8 @@ class MADDPG:
         self.agents = []
         self.n_agents = n_agents
         self.n_actions = n_actions
-        chkpt_dir += scenario 
+        chkpt_dir += scenario
+        # TODO:
         for agent_idx in range(self.n_agents):
             self.agents.append(Agent(actor_dims[agent_idx], critic_dims,  
                             n_actions, n_agents, agent_idx, alpha=alpha, beta=beta,

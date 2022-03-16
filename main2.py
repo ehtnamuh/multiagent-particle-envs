@@ -12,7 +12,7 @@ def obs_list_to_state_vector(observation):
 
 if __name__ == '__main__':
     #scenario = 'simple'
-    scenario = 'simple_adversary'
+    scenario = 'simple_reference'
     env = make_env(scenario)
     n_agents = env.n
     actor_dims = []
@@ -21,29 +21,32 @@ if __name__ == '__main__':
     critic_dims = sum(actor_dims)
 
     # action space is a list of arrays, assume each agent has same action space
-    n_actions = env.action_space[0].n
+    # print(env.action_space)
+    print(env.action_space[0].shape)
+    n_actions = 50
     # print("0:", {env.action_space[0].n})
     # print("0:", {env.action_space[1].n})
     # print("0:", {env.action_space[2].n})
 
-    maddpg_agents = MADDPG(actor_dims, critic_dims, n_agents, n_actions, 
-                           fc1=64, fc2=64,  
+    maddpg_agents = MADDPG(actor_dims, critic_dims, n_agents, n_actions,
+                           fc1=64, fc2=64,
                            alpha=0.01, beta=0.01, scenario=scenario,
                            chkpt_dir='tmp/maddpg/')
 
-    memory = MultiAgentReplayBuffer(1000000, critic_dims, actor_dims, 
+    memory = MultiAgentReplayBuffer(1000000, critic_dims, actor_dims,
                         n_actions, n_agents, batch_size=1024)
 
     PRINT_INTERVAL = 500
     SAVE_INTERVAL = 5000
-    N_GAMES = 100000
-    MAX_STEPS = 50
+    N_GAMES = 50000
+    MAX_STEPS = 100
     total_steps = 0
     score_history = []
-    evaluate = True
-    best_score = -100
 
-    maddpg_agents.load_checkpoint()
+    evaluate = True
+    best_score = -145
+
+    # maddpg_agents.load_checkpoint()
     if evaluate:
         maddpg_agents.load_checkpoint()
 

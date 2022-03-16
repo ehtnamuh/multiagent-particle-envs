@@ -14,7 +14,6 @@ class MultiAgentReplayBuffer:
         self.new_state_memory = np.zeros((self.mem_size, critic_dims))
         self.reward_memory = np.zeros((self.mem_size, n_agents))
         self.terminal_memory = np.zeros((self.mem_size, n_agents), dtype=bool)
-
         self.init_actor_memory()
 
     def init_actor_memory(self):
